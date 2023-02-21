@@ -8,10 +8,15 @@ with open('api_key.txt', 'r') as file:
 
 def main():
     prompt = "You: " + input("Start by typing in a question for your new friend...\n") + "\nFriend: "
-    while prompt != "quit":
-        print("Friend: " + reply(prompt)["choices"][0]["text"])
-        prompt = "You: " + input("You: ") + "\nFriend: "
-    return
+
+    # Need a better exit clause. Works for now.
+    while True:
+        computer_response = reply(prompt)["choices"][0]["text"]
+        print(f"Friend: {computer_response}")
+        user_response = input("You: ")
+        if user_response == "quit":
+            exit()
+        prompt += f"{computer_response}\nYou: {user_response}\nFriend: "
 
 def reply(prompt: str):
     response = openai.Completion.create(
